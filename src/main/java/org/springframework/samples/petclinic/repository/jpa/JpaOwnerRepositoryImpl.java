@@ -61,6 +61,14 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
         return query.getResultList();
     }
 
+    public Collection<Owner> findByCity(String city) {
+        // using 'join fetch' because a single query should load both owners and pets
+        // using 'left join fetch' because it might happen that an owner does not have pets yet
+        Query query = this.em.createQuery("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.city LIKE :city");
+        query.setParameter("city", city + "%");
+        return query.getResultList();
+    }
+
     @Override
     public Owner findById(int id) {
         // using 'join fetch' because a single query should load both owners and pets
@@ -80,7 +88,7 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
         }
 
     }
-    
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Owner> findAll() throws DataAccessException {

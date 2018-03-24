@@ -62,6 +62,18 @@ public class OwnerRestController {
 		return new ResponseEntity<Collection<Owner>>(owners, HttpStatus.OK);
 	}
 
+    @RequestMapping(value = "/*/city/{city}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<Collection<Owner>> getOwnersListByCity(@PathVariable("city") String city) {
+        if (city == null) {
+            city = "";
+        }
+        Collection<Owner> owners = this.clinicService.findOwnerByCity(city);
+        if (owners.isEmpty()) {
+            return new ResponseEntity<Collection<Owner>>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<Collection<Owner>>(owners, HttpStatus.OK);
+    }
+
 	@RequestMapping(value = "", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	public ResponseEntity<Collection<Owner>> getOwners() {
 		Collection<Owner> owners = this.clinicService.findAllOwners();

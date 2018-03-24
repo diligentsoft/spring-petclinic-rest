@@ -91,6 +91,24 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
     }
 
     /**
+     * Loads {@link Owner Owners} from the data store by last name, returning all owners whose last name <i>starts</i> with
+     * the given name; also loads the {@link Pet Pets} and {@link Visit Visits} for the corresponding owners, if not
+     * already loaded.
+     */
+    @Override
+    public Collection<Owner> findByCity(String city) throws DataAccessException {
+        Map<String, Object> params = new HashMap<>();
+        params.put("city", city + "%");
+        List<Owner> owners = this.namedParameterJdbcTemplate.query(
+            "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE city like :lastName",
+            params,
+            BeanPropertyRowMapper.newInstance(Owner.class)
+        );
+        loadOwnersPetsAndVisits(owners);
+        return owners;
+    }
+
+    /**
      * Loads the {@link Owner} with the supplied <code>id</code>; also loads the {@link Pet Pets} and {@link Visit Visits}
      * for the corresponding owner, if not already loaded.
      */
@@ -158,7 +176,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
             loadPetsAndVisits(owner);
         }
     }
-    
+
 	@Override
 	public Collection<Owner> findAll() throws DataAccessException {
 		List<Owner> owners = this.namedParameterJdbcTemplate.query(

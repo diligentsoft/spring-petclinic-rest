@@ -44,6 +44,16 @@ public interface OwnerRepository {
     Collection<Owner> findByLastName(String lastName) throws DataAccessException;
 
     /**
+     * Retrieve <code>Owner</code>s from the data store by city, returning all owners whose city name <i>starts</i>
+     * with the given city.
+     *
+     * @param city value to search for
+     * @return a <code>Collection</code> of matching <code>Owner</code>s (or an empty <code>Collection</code> if none
+     * found)
+     */
+    Collection<Owner> findByCity(String city) throws DataAccessException;
+
+    /**
      * Retrieve an <code>Owner</code> from the data store by id.
      *
      * @param id the id to search for
@@ -60,20 +70,20 @@ public interface OwnerRepository {
      * @see BaseEntity#isNew
      */
     void save(Owner owner) throws DataAccessException;
-    
+
     /**
-     * Retrieve <code>Owner</code>s from the data store, returning all owners 
+     * Retrieve <code>Owner</code>s from the data store, returning all owners
      *
      * @return a <code>Collection</code> of <code>Owner</code>s (or an empty <code>Collection</code> if none
      * found)
      */
 	Collection<Owner> findAll() throws DataAccessException;
-	
+
     /**
      * Delete an <code>Owner</code> to the data store by <code>Owner</code>.
      *
      * @param owner the <code>Owner</code> to delete
-     * 
+     *
      */
 	void delete(Owner owner) throws DataAccessException;
 
