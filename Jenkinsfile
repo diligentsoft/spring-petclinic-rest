@@ -23,7 +23,16 @@ pipeline {
         }
         stage('Deploy - Test') {
             steps {
-                sh './deploy.sh 52.56.220.178 latest'
+                withCredentials([string(credentialsId: 'swarm-master-test', variable: 'swarm_master')]) {
+                    sh './deploy.sh $swarm_master latest'
+                }
+            }
+        }
+        stage('Deploy - Prod') {
+            steps {
+                withCredentials([string(credentialsId: 'swarm-master-prod', variable: 'swarm_master')]) {
+                    sh './deploy.sh $swarm_master latest'
+                }
             }
         }
     }
