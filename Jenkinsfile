@@ -24,14 +24,14 @@ pipeline {
         stage('Deploy - Test') {
             steps {
                 withCredentials([string(credentialsId: 'swarm-master-test', variable: 'swarm_master')]) {
-                    sh './deploy.sh $swarm_master latest'
+                    sh 'ssh -o StrictHostKeyChecking=no -i /var/jenkins_home/.ssh/keys/docker-for-aws.pem docker@$swarm_master deploy.sh diligentsoft/spring-petclinic latest spring-petclinic 9966'
                 }
             }
         }
         stage('Deploy - Prod') {
             steps {
                 withCredentials([string(credentialsId: 'swarm-master-prod', variable: 'swarm_master')]) {
-                    sh './deploy.sh $swarm_master latest'
+                    sh 'ssh -o StrictHostKeyChecking=no -i /var/jenkins_home/.ssh/keys/docker-for-aws.pem docker@$swarm_master deploy.sh diligentsoft/spring-petclinic latest spring-petclinic 9966'
                 }
             }
         }
