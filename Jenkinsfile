@@ -28,6 +28,11 @@ pipeline {
                 }
             }
         }
+        stage('Sanity check') {
+            steps {
+                input "Does the staging environment look ok? Deploy to prod?"
+            }
+        }
         stage('Deploy - Prod') {
             steps {
                 withCredentials([string(credentialsId: 'swarm-master-prod', variable: 'swarm_master')]) {
